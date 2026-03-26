@@ -4,6 +4,7 @@ import { TextInput } from './components/ui/TextInput/TextInput';
 import { TextArea } from './components/ui/TextArea';
 import { Select } from './components/ui/Select/Select';
 import { Badge } from './components/ui/Badge';
+import { Card, CardContent, CardFooter, CardHeader } from './components/ui/Card';
 
 function App() {
 
@@ -52,11 +53,19 @@ function App() {
         ]}
       />
     </div>
-    <div className="p-6 flex gap-2">
-      <Badge>Default</Badge>
-      <Badge variant="secondary">Info</Badge>
-      <Badge variant="success">Done</Badge>
-      <Badge variant="destructive">High</Badge>
+    <div className="p-6 max-w-sm">
+      <Card>
+        <CardHeader>Build UI Components</CardHeader>
+
+        <CardContent>
+          Create reusable Button, Input, and Select components.
+        </CardContent>
+
+        <CardFooter>
+          <Badge variant="destructive">High</Badge>
+          <span className="text-xs text-gray-500">John</span>
+        </CardFooter>
+      </Card>
     </div>
     </>
   );
