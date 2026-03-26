@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Button } from './components/ui/Button';
 import { TextInput } from './components/ui/TextInput/TextInput';
 import { TextArea } from './components/ui/TextArea';
+import { Select } from './components/ui/Select/Select';
 
 function App() {
 
@@ -28,6 +29,28 @@ function App() {
         label="Description"
         error="Description is required"
       />
+    <div className="p-6 space-y-4">
+      <Select
+        label="Priority"
+        options={[
+          { label: "Low", value: "low" },
+          { label: "Medium", value: "medium" },
+          { label: "High", value: "high" },
+        ]}
+        value="medium"
+        onChange={(val) => console.log(val)}
+      />
+
+      <Select
+        label="Status"
+        error="Status required"
+        options={[
+          { label: "Backlog", value: "backlog" },
+          { label: "In Progress", value: "in-progress" },
+          { label: "Done", value: "done" },
+        ]}
+      />
+    </div>
     </>
   );
 }
