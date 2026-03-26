@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from './components/ui/Button';
 import { TextInput } from './components/ui/TextInput/TextInput';
+import { TextArea } from './components/ui/TextArea';
 
 function App() {
 
@@ -21,6 +22,12 @@ function App() {
         error="Title is required"
       />
     </div>
+      <TextArea label="Description" placeholder="Enter details..." />
+
+      <TextArea
+        label="Description"
+        error="Description is required"
+      />
     </>
   );
 }
