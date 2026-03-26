@@ -5,68 +5,29 @@ import { TextArea } from './components/ui/TextArea';
 import { Select } from './components/ui/Select/Select';
 import { Badge } from './components/ui/Badge';
 import { Card, CardContent, CardFooter, CardHeader } from './components/ui/Card';
+import { TaskCard } from "./features/tasks/components/TaskCard";
+import type { Task } from './types/task';
+
+
+const mockTask: Task = {
+  id: "1",
+  title: "Build UI components",
+  description: "Create reusable components for the app UI system.",
+  status: "backlog",
+  priority: "high",
+  assignee: "Sridhar",
+  tags: ["frontend", "react"],
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
 
 function App() {
 
   return (
     <>
-    <div className="p-6 space-x-4">
-      <Button>Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="destructive">Delete</Button>
-      <Button size="lg">Large</Button>
-      <Button isLoading>Saving...</Button>
-    </div>
-    <div className="p-6 space-y-4">
-      <TextInput label="Title" placeholder="Enter task..." />
-
-      <TextInput
-        label="Title"
-        error="Title is required"
-      />
-    </div>
-      <TextArea label="Description" placeholder="Enter details..." />
-
-      <TextArea
-        label="Description"
-        error="Description is required"
-      />
-    <div className="p-6 space-y-4">
-      <Select
-        label="Priority"
-        options={[
-          { label: "Low", value: "low" },
-          { label: "Medium", value: "medium" },
-          { label: "High", value: "high" },
-        ]}
-        value="medium"
-        onChange={(val) => console.log(val)}
-      />
-
-      <Select
-        label="Status"
-        error="Status required"
-        options={[
-          { label: "Backlog", value: "backlog" },
-          { label: "In Progress", value: "in-progress" },
-          { label: "Done", value: "done" },
-        ]}
-      />
-    </div>
     <div className="p-6 max-w-sm">
-      <Card>
-        <CardHeader>Build UI Components</CardHeader>
-
-        <CardContent>
-          Create reusable Button, Input, and Select components.
-        </CardContent>
-
-        <CardFooter>
-          <Badge variant="destructive">High</Badge>
-          <span className="text-xs text-gray-500">John</span>
-        </CardFooter>
-      </Card>
-    </div>
+      <TaskCard task={mockTask} />
+    </div>    
     </>
   );
 }

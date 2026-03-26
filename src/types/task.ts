@@ -9,7 +9,7 @@ export interface Task {
     status: TaskStatus;
     priority: Priority;
     assignee: string;
-    tags: String[];
+    tags: string[];
     createdAt: string;
     updatedAt: string;
 }
