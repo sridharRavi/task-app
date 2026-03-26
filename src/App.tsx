@@ -3,6 +3,7 @@ import { Button } from './components/ui/Button';
 import { TextInput } from './components/ui/TextInput/TextInput';
 import { TextArea } from './components/ui/TextArea';
 import { Select } from './components/ui/Select/Select';
+import { Badge } from './components/ui/Badge';
 
 function App() {
 
@@ -50,6 +51,12 @@ function App() {
           { label: "Done", value: "done" },
         ]}
       />
+    </div>
+    <div className="p-6 flex gap-2">
+      <Badge>Default</Badge>
+      <Badge variant="secondary">Info</Badge>
+      <Badge variant="success">Done</Badge>
+      <Badge variant="destructive">High</Badge>
     </div>
     </>
   );
