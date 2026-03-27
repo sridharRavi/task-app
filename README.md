@@ -1,73 +1,168 @@
-# React + TypeScript + Vite
+# Team Workflow Board (React + TypeScript)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A mini **Trello/Jira-style task management app** built with React and TypeScript.
+This project demonstrates component design, state management, UI architecture, and persistence — all without a backend.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Task Board
 
-## React Compiler
+* Tasks grouped into:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+  * **Backlog**
+  * **In Progress**
+  * **Done**
+* Responsive column layout
+* Clean card-based UI
 
-## Expanding the ESLint configuration
+### Task Management
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* Create new tasks via modal form
+* Edit existing tasks (click on any task card)
+* Form validation (required fields, etc.)
+* Dirty state protection (warns before losing unsaved changes)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Component Library (Reusable UI System)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Located in: `src/components/ui`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Includes:
+
+* `Button` (variants + sizes)
+* `TextInput`, `TextArea`
+* `Select`
+* `Badge` (tags, priority)
+* `Card` (composable layout)
+* `Modal`
+* (Extensible for Toast/Alert)
+
+Built with **composition-first design** and consistent styling.
+
+### Persistence (Local Storage)
+
+* Tasks saved automatically in browser storage
+* Data persists across refreshes
+* Versioned schema with **migration support**
+
+### Architecture Highlights
+
+* **Domain-driven components** (`TaskCard`, `TaskBoard`)
+* **Reusable UI primitives**
+* **Controlled forms**
+* **Type-safe models with TypeScript**
+* **Separation of concerns**:
+
+  * UI → components/ui
+  * Features → features/tasks
+  * Logic → lib/storage
+
+
+## Project Structure
+
+```bash
+src/
+  components/
+    ui/
+      Button/
+      TextInput/
+      TextArea/
+      Select/
+      Badge/
+      Card/
+      Modal/
+
+  features/
+    tasks/
+      components/
+        TaskBoard.tsx
+        TaskColumn.tsx
+        TaskCard.tsx
+        TaskForm.tsx
+      lib/
+        storage.ts
+
+  types/
+    task.ts
+
+  App.tsx
+  main.tsx
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Task Model
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```ts
+type Task = {
+  id: string;
+  title: string;
+  description: string;
+  status: "backlog" | "in-progress" | "done";
+  priority: "low" | "medium" | "high";
+  assignee: string;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+};
 ```
+
+---
+
+## Getting Started
+
+### Clone the repository
+
+```bash
+git clone https://github.com/your-username/task-app.git
+cd task-app
+```
+
+---
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+---
+
+### Run the development server
+
+```bash
+npm run dev
+```
+
+---
+
+### Open in browser
+
+```
+http://localhost:5173
+```
+
+## Styling
+
+* Built with **Tailwind CSS**
+* Utility-first approach
+* Consistent spacing, typography, and colors
+
+##  Key Concepts Demonstrated
+
+* React component composition
+* TypeScript strict typing (union types, props)
+* Controlled vs uncontrolled components
+* State lifting and prop drilling
+* LocalStorage persistence patterns
+* Schema versioning + migration
+* UX patterns (modals, dirty state warnings)
+
+
+## Author
+
+Built as part of a frontend system design + React architecture exercise.
+
+## License
+
+MIT License
+
