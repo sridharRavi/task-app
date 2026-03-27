@@ -11,65 +11,56 @@ import { TaskBoard } from './features/tasks/components/TaskBoard';
 import { Modal } from './components/ui/Modal';
 import { TaskForm } from './features/tasks/components/TaskForm';
 
-const tasks: Task[] = [
-  {
-    id: "1",
-    title: "Setup project",
-    description: "Initialize Vite + React",
-    status: "backlog",
-    priority: "high",
-    assignee: "Sridhar",
-    tags: ["setup"],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "2",
-    title: "Build UI components",
-    description: "Button, Input, Select",
-    status: "in-progress",
-    priority: "medium",
-    assignee: "Sridhar",
-    tags: ["frontend"],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "3",
-    title: "Finish board UI",
-    description: "TaskBoard + TaskCard",
-    status: "done",
-    priority: "low",
-    assignee: "Sridhar",
-    tags: ["ui"],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
-
 function App() {
 
    const [tasks, setTasks] = useState<Task[]>([]);
   const [open, setOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null)
 
-  const handleCreate = (task: Task) => {
-    setTasks((prev) => [...prev, task]);
-    setOpen(false);
-  };
+  const handleEdit = (task: Task) => {
+    setSelectedTask(task);
+    setOpen(true)
+  }
+
+  const handleSave = (task: Task) => {
+  setTasks((prev) => {
+    const exists = prev.find((t) => t.id === task.id);
+
+    if (exists) {
+      return prev.map((t) => (t.id === task.id ? task : t));
+    }
+
+    return [...prev, task];
+  });
+
+  setOpen(false);
+  setSelectedTask(null);
+};
 
   return (
     <>
     <div className="p-6">
       <Button onClick={() => setOpen(true)}>New Task</Button>
 
-      <TaskBoard tasks={tasks} />
+      <TaskBoard tasks={tasks} onTaskClick={handleEdit} />
 
-      <Modal open={open} onClose={() => setOpen(false)} title="Create Task">
-        <TaskForm
-          onSubmit={handleCreate}
-          onCancel={() => setOpen(false)}
-        />
-      </Modal>
+      <Modal
+        open={open}
+        onClose={() => {
+        setOpen(false);
+        setSelectedTask(null);
+      }}
+      title={selectedTask ? "Edit Task" : "Create Task"}
+      >
+    <TaskForm
+      initialTask={selectedTask || undefined} 
+      onSubmit={handleSave}
+      onCancel={() => {
+        setOpen(false);
+        setSelectedTask(null);
+      }}
+    />
+    </Modal>
     </div>    
     </>
   );

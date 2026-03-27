@@ -6,19 +6,23 @@ import { Button } from "../../../components/ui/Button";
 import type { Task } from "../../../types/task";
 
 interface TaskFormProps {
+  initialTask?: Task;
   onSubmit: (task: Task) => void;
   onCancel: () => void;
 }
 
-export const TaskForm = ({ onSubmit, onCancel }: TaskFormProps) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("backlog");
-  const [priority, setPriority] = useState("medium");
-  const [assignee, setAssignee] = useState("");
-  const [tags, setTags] = useState("");
+export const TaskForm = ({ onSubmit, onCancel, initialTask }: TaskFormProps) => {
+  const [title, setTitle] = useState(initialTask?.title || "");
+const [description, setDescription] = useState(initialTask?.description || "");
+const [status, setStatus] = useState(initialTask?.status || "backlog");
+const [priority, setPriority] = useState(initialTask?.priority || "medium");
+const [assignee, setAssignee] = useState(initialTask?.assignee || "");
+const [tags, setTags] = useState(
+  initialTask?.tags.join(", ") || ""
+);
 
   const [errors, setErrors] = useState<{ title?: string }>({});
+  const [isDirty, setIsDirty] = useState(false);
 
   const handleSubmit = () => {
     if (!title.trim()) {
@@ -26,42 +30,64 @@ export const TaskForm = ({ onSubmit, onCancel }: TaskFormProps) => {
       return;
     }
 
-    const now = new Date().toISOString();
+  const now = new Date().toISOString();
 
-    const newTask: Task = {
-      id: crypto.randomUUID(),
-      title,
-      description,
-      status: status as Task["status"],
-      priority: priority as Task["priority"],
-      assignee,
-      tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
-      createdAt: now,
-      updatedAt: now,
-    };
-
+  
+  const newTask: Task = {
+    id: initialTask?.id || crypto.randomUUID(),
+    title,
+    description,
+    status: status as Task["status"],
+    priority: priority as Task["priority"],
+    assignee,
+    tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
+    createdAt: initialTask?.createdAt || now,   
+    updatedAt: now,                               
+  };
     onSubmit(newTask);
   };
+
+  const handleCancel = () => {
+  if (isDirty) {
+    const confirmLeave = window.confirm(
+      "You have unsaved changes. Are you sure you want to leave?"
+    );
+
+    if (!confirmLeave) return;
+  }
+
+  onCancel();
+};
 
   return (
     <div className="space-y-4">
       <TextInput
         label="Title"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={(e) => 
+          {
+            setTitle(e.target.value);
+            setIsDirty(true);
+          }}
         error={errors.title}
       />
 
       <TextArea
         label="Description"
         value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        onChange={(e) => {
+          setDescription(e.target.value);
+          setIsDirty(true);
+        }}
       />
 
       <Select
         label="Status"
         value={status}
-        onChange={setStatus}
+        onChange={(value) => {
+          setStatus(value as Task["status"])
+          setIsDirty(true);
+        }}
         options={[
           { label: "Backlog", value: "backlog" },
           { label: "In Progress", value: "in-progress" },
@@ -72,7 +98,10 @@ export const TaskForm = ({ onSubmit, onCancel }: TaskFormProps) => {
       <Select
         label="Priority"
         value={priority}
-        onChange={setPriority}
+        onChange={(value) => { 
+          setPriority(value as Task["priority"]);
+          setIsDirty(true);
+        }}
         options={[
           { label: "Low", value: "low" },
           { label: "Medium", value: "medium" },
@@ -83,17 +112,23 @@ export const TaskForm = ({ onSubmit, onCancel }: TaskFormProps) => {
       <TextInput
         label="Assignee"
         value={assignee}
-        onChange={(e) => setAssignee(e.target.value)}
+        onChange={(e) => {
+          setAssignee(e.target.value);
+          setIsDirty(true);
+        }}
       />
 
       <TextInput
         label="Tags (comma separated)"
         value={tags}
-        onChange={(e) => setTags(e.target.value)}
+        onChange={(e) => {
+          setTags(e.target.value)
+          setIsDirty(true);
+        }}
       />
 
       <div className="flex justify-end gap-2">
-        <Button variant="secondary" onClick={onCancel}>
+        <Button variant="secondary" onClick={handleCancel}>
           Cancel
         </Button>
 

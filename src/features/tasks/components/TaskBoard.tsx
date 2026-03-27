@@ -3,9 +3,10 @@ import { TaskColumn } from "./TaskColumn";
 
 interface TaskBoardProps {
   tasks: Task[];
+  onTaskClick?: (task: Task) => void;
 }
 
-export const TaskBoard = ({ tasks }: TaskBoardProps) => {
+export const TaskBoard = ({ tasks, onTaskClick }: TaskBoardProps) => {
   const backlogTasks = tasks.filter((t) => t.status === "backlog");
   const inProgressTasks = tasks.filter((t) => t.status === "in-progress");
   const doneTasks = tasks.filter((t) => t.status === "done");
@@ -14,20 +15,20 @@ export const TaskBoard = ({ tasks }: TaskBoardProps) => {
     <div className="flex gap-6 overflow-x-auto p-4">
       <TaskColumn
         title="Backlog"
-        status="backlog"
+        onTaskClick={onTaskClick}
         tasks={backlogTasks}
       />
 
       <TaskColumn
         title="In Progress"
-        status="in-progress"
         tasks={inProgressTasks}
+        onTaskClick={onTaskClick}
       />
 
       <TaskColumn
         title="Done"
-        status="done"
         tasks={doneTasks}
+        onTaskClick={onTaskClick}
       />
     </div>
   );

@@ -4,9 +4,11 @@ import type { Task, TaskStatus } from "../../../types/task";
 interface TaskColumnProps {
   title: string;
   tasks: Task[];
+  onTaskClick?: (task: Task) => void;
+
 }
 
-export const TaskColumn = ({ title, tasks }: TaskColumnProps) => {
+export const TaskColumn = ({ title, tasks, onTaskClick }: TaskColumnProps) => {
   return (
     <div className="flex-1 min-w-[250px]">
       <h2 className="text-lg font-semibold mb-3">{title}</h2>
@@ -16,7 +18,10 @@ export const TaskColumn = ({ title, tasks }: TaskColumnProps) => {
           <p className="text-sm text-gray-400">No tasks</p>
         ) : (
           tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard
+              key={task.id}
+              task={task}
+              onClick={onTaskClick} />
           ))
         )}
       </div>

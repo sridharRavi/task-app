@@ -4,6 +4,7 @@ import type { Task } from "../../../types/task";
 
 interface TaskCardProps {
   task: Task;
+  onClick?: (task: Task) => void;
 }
 
 const priorityToVariant = {
@@ -12,8 +13,9 @@ const priorityToVariant = {
   high: "destructive",
 } as const;
 
-export const TaskCard = ({ task }: TaskCardProps) => {
+export const TaskCard = ({ task, onClick }: TaskCardProps) => {
   return (
+    <div onClick={()=> onClick?.(task)} className="cursor-pointer">
     <Card className="space-y-2">
       <CardHeader>{task.title}</CardHeader>
 
@@ -41,5 +43,6 @@ export const TaskCard = ({ task }: TaskCardProps) => {
         </div>
       </CardFooter>
     </Card>
+    </div>
   );
 };
