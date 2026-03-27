@@ -1,19 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from './components/ui/Button';
-import { TextInput } from './components/ui/TextInput/TextInput';
-import { TextArea } from './components/ui/TextArea';
-import { Select } from './components/ui/Select/Select';
-import { Badge } from './components/ui/Badge';
-import { Card, CardContent, CardFooter, CardHeader } from './components/ui/Card';
-import { TaskCard } from "./features/tasks/components/TaskCard";
 import type { Task } from './types/task';
 import { TaskBoard } from './features/tasks/components/TaskBoard';
 import { Modal } from './components/ui/Modal';
 import { TaskForm } from './features/tasks/components/TaskForm';
+import { loadTasks, saveTasks } from './features/tasks/lib/Storage';
 
 function App() {
 
-   const [tasks, setTasks] = useState<Task[]>([]);
+  const { tasks: initialTasks, migrated } = loadTasks();
+  const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [open, setOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
 
@@ -36,6 +32,10 @@ function App() {
   setOpen(false);
   setSelectedTask(null);
 };
+
+useEffect(()=> {
+  saveTasks(tasks);
+}, [tasks])
 
   return (
     <>
